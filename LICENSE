@@ -1,0 +1,42 @@
+# Licencia
+
+## El corpus
+
+Salvo donde se indique lo contrario, el contenido de este repositorio —los
+capítulos del dossier, las fichas de evidencia, las monografías y el código del
+generador del sitio— se publica bajo
+
+**Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional
+(CC BY-NC-SA 4.0)**
+
+https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es
+
+En resumen, sos libre de **compartir** y **adaptar** este material, siempre que:
+
+- **Atribución** — des crédito, enlaces a la licencia e indiques si hiciste cambios.
+- **NoComercial** — no lo uses con fines comerciales.
+- **CompartirIgual** — si lo transformás, distribuyas tu versión con esta misma licencia.
+
+Se eligió esta licencia, y no una más abierta, por coherencia con la fuente
+académica principal del corpus: el artículo de Florencia Guzmán que sostiene la
+monografía `VID-1774-VALLE-01` se publica bajo CC BY-NC-SA 4.0.
+
+## Lo que esta licencia no cubre
+
+**Los documentos de archivo citados** —el acta de bautismo de 1774, los acuerdos
+del Extinguido Cabildo de 1807, la declaración de Hipólito Videla de 1827, el
+*Diario de Sesiones* de 1828, las memorias de Aráoz de Lamadrid— son del **dominio
+público** por su antigüedad. Esta licencia no reclama derecho alguno sobre ellos.
+
+**Las citas de obras académicas y periodísticas** pertenecen a sus autores y se
+reproducen al amparo del derecho de cita: extractos breves, con atribución
+completa, con fines de estudio y crítica. Si sos autor o autora de algún material
+citado y querés que se modifique la cita o se retire, abrí un issue.
+
+## Advertencia de uso
+
+Esto es un **corpus de trabajo, no una obra de referencia**. Es una síntesis de
+fuentes secundarias con sus límites declarados. No lo cites como autoridad: cada
+afirmación declara la fuente de la que proviene, y **esa** es la que corresponde
+citar. Lo que el corpus no pudo verificar está reunido en el panel de
+incertidumbre, y conviene leerlo antes de usar cualquier cifra.

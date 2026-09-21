@@ -4,6 +4,31 @@ Este directorio prepara materiales para el Proyecto de ChatGPT **Historia argent
 
 No contiene copias de libros. `fuentes-iniciales.md` es un catálogo de títulos disponibles localmente y de cómo usarlos críticamente.
 
+**Sitio publicado:** https://hectorhjure.github.io/historia-argentina/
+
+## Cómo se publica
+
+El sitio se reconstruye solo en cada push a `main` (`.github/workflows/publicar.yml`).
+**No hay paso manual y `docs/` no se versiona:** la versión publicada de este corpus ya
+quedó desactualizada una vez, y el modo de evitar que vuelva a pasar es que nadie tenga
+que acordarse de reconstruirla.
+
+Para trabajar en local:
+
+```bash
+python3 sitio/build.py     # genera docs/ (requiere pandoc)
+python3 sitio/qa.py        # balance de etiquetas, enlaces rotos, cifras, huérfanas
+python3 -m http.server -d docs 8000
+```
+
+`sitio/qa.py` también corre en CI y **aborta el despliegue si falla**. Encontró dos bugs
+antes de que se publicara nada: 55 tablas sin contenedor de scroll y 86 enlaces rotos
+al pie.
+
+Se edita **el markdown**, nunca el HTML. Las referencias cruzadas se escriben como
+`` `10-mujeres.md` `` o `` `VID-1774-VALLE-01` `` y el generador las convierte en
+enlaces reales en ambos sentidos.
+
 ## Contenido
 
 ### Método y catálogo de fuentes
