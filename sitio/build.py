@@ -79,6 +79,22 @@ def titulo_de(cuerpo, respaldo):
     return m.group(1).strip() if m else respaldo
 
 
+RE_NEGRITA = re.compile(r"\*\*(.+?)\*\*", re.S)
+RE_CURSIVA = re.compile(r"(?<![\*\w])\*([^\*\n]+?)\*(?!\*)")
+RE_TICKS = re.compile(r"`([^`\n]+)`")
+
+
+def inline_md(s):
+    """Convierte el markdown de línea a HTML. El panel de incertidumbre cita
+    fragmentos crudos del corpus; sin esto se ven los asteriscos."""
+    import html as _h
+    s = _h.escape(s, quote=False)
+    s = RE_TICKS.sub(r"<code>\1</code>", s)
+    s = RE_NEGRITA.sub(r"<strong>\1</strong>", s)
+    s = RE_CURSIVA.sub(r"<em>\1</em>", s)
+    return s.replace("**", "").strip(" *|—-")
+
+
 def texto_plano(html):
     t = re.sub(r"<[^>]+>", " ", html)
     t = re.sub(r"&[a-z]+;|&#\d+;", " ", t)
@@ -241,7 +257,7 @@ def incertidumbres(docs):
             elif "[CIRC]" in l:
                 clase, etiqueta = "circ", "Circula sin respaldo documental"
             if clase:
-                limpio = re.sub(r"^[>\-*|\s⚠]+", "", l)
+                limpio = re.sub(r"^(?:[>|\s⚠]|-(?=\s)|\*(?!\*))+", "", l)
                 filas.append({"clase": clase, "etiqueta": etiqueta, "url": d["url"],
                               "origen": d["slug"], "capa": d["capa"],
                               "texto": limpio[:400]})
@@ -268,7 +284,7 @@ def pagina(titulo, contenido, prof=0, activo="", descripcion="", clase=""):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>{titulo} · Historia argentina</title>
+<title>{titulo}{" · Historia argentina" if titulo != "Historia argentina" else ""}</title>
 <meta name="description" content="{descripcion}">
 <link rel="stylesheet" href="{arriba}assets/estilo.css">
 </head>
@@ -513,7 +529,7 @@ de la síntesis, no sólo para agregar color.</div>
             continue
         items = "".join(
             f"""<li><a href="{f['url']}"><code>{f['origen']}</code></a>
-            <p>{f['texto']}</p></li>""" for f in grupo)
+            <p>{inline_md(f['texto'])}</p></li>""" for f in grupo)
         grupos += (f"<section class='grupo-incert i-{clase}'>"
                    f"<h2>{etiqueta} <span class='cuenta'>{len(grupo)}</span></h2>"
                    f"<ul class='incert'>{items}</ul></section>")
