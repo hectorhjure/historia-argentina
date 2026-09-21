@@ -1,0 +1,15 @@
+# Salida del generador — la construye GitHub Actions, no se versiona
+docs/
+
+# Sistema
+.DS_Store
+*.swp
+__pycache__/
+*.pyc
+
+# Nunca versionar material con copyright
+corpus/
+*.epub
+*.pdf
+*.mobi
+*.azw3
