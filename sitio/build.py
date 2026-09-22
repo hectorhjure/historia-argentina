@@ -28,6 +28,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import eventos as _eventos   # noqa: E402
 import linea as _linea       # noqa: E402
+import recorrido as _rec     # noqa: E402
 
 RAIZ = Path(__file__).resolve().parent.parent
 SITIO = RAIZ / "sitio"
@@ -276,6 +277,7 @@ def incertidumbres(docs):
 # ------------------------------------------------------------- plantilla
 
 NAV = [("", "Portada"), ("linea.html", "Línea de tiempo"),
+       ("recorridos/", "Recorridos"),
        ("capitulos/", "Capítulos"), ("fichas/", "Fichas"),
        ("monografias/", "Monografías"), ("incertidumbre.html", "Incertidumbre")]
 
@@ -357,6 +359,29 @@ def render(docs, mapa, entrantes):
                     + badge(fm.get("periodo", ""), "neutro")
                     + badge(fm.get("estado", ""), "e-actualizado") + "</div>")
 
+        # "Aparece en estos recorridos": el vínculo inverso. Se calcula desde
+        # lo que el recorrido declara en su frontmatter y desde las estaciones
+        # que citan explícitamente este documento, no por parecido temático.
+        en_rec = ""
+        for r in _rec.todos():
+            decl = ([r["fm"].get("monografia", "")]
+                    + list(r["fm"].get("fichas", []))
+                    + list(r["fm"].get("capitulos", [])))
+            if d["slug"] not in decl and d["fuente"].stem not in decl:
+                continue
+            estaciones = [e for e in r["estaciones"]
+                          if d["slug"] in e["bloques"].get("sostiene", "")
+                          or d["fuente"].stem in e["bloques"].get("sostiene", "")]
+            detalle = (", ".join(
+                f'<a href="../recorridos/{r["id"]}/{e["n"]}.html">estación {e["n"]}</a>'
+                for e in estaciones) if estaciones else "")
+            en_rec += (
+                f'<aside class="en-recorridos"><h2>Aparece en un recorrido</h2>'
+                f'<a href="../recorridos/{r["id"]}/index.html">{r["titulo"]}</a>'
+                + (f"<p>Sostiene {detalle}.</p>" if detalle else
+                   "<p>Es una de sus fuentes de base.</p>")
+                + "</aside>")
+
         refs = sorted(entrantes.get(d["slug"], set()))
         pie = ""
         if refs:
@@ -369,18 +394,20 @@ def render(docs, mapa, entrantes):
         etiqueta = {"capitulo": "Capítulo", "ficha": "Ficha de evidencia",
                     "monografia": "Monografía"}[d["capa"]]
         art = (f"<article class='lectura {d['capa']}'>"
-               f"<p class='kicker'>{etiqueta}</p><h1>{d['titulo']}</h1>{meta}{html}{pie}</article>")
+               f"<p class='kicker'>{etiqueta}</p><h1>{d['titulo']}</h1>"
+               f"{meta}{html}{en_rec}{pie}</article>")
         (SALIDA / d["url"]).write_text(
             pagina(d["titulo"], art, prof, d["url"].split("/")[0],
                    d.get("afirmacion", "")[:180]))
 
 
-def indices(docs, filas):
+def indices(docs, filas, mapa):
     caps = [d for d in docs if d["capa"] == "capitulo"]
     fichas = [d for d in docs if d["capa"] == "ficha"]
     monos = [d for d in docs if d["capa"] == "monografia"]
     palabras = sum(len(d["cuerpo"].split()) for d in docs)
     n_eventos = len(_eventos.todos())
+    recs = _rec.todos()
 
     # ---- portada
     tarjetas = "".join(f"""
@@ -430,6 +457,19 @@ def indices(docs, filas):
       <h3>Monografías</h3><p>Desarrollos con aparato de archivo propio. Cuando una
       monografía contradice a un capítulo, <strong>manda la monografía</strong>.</p>
       <a href="monografias/index.html">Ver monografías →</a></div>
+  </div>
+</section>
+
+<section class="destacado-incert recorrido-destacado">
+  <div>
+    <p class="kicker">La otra cara</p>
+    <h2>{recs[0]['titulo'] if recs else 'Recorridos'}</h2>
+    <p>Siete documentos de archivo sobre María Remedios del Valle, de a uno. Cada
+    estación separa <strong>lo que el papel dice, lo que se infiere de él y lo que no
+    se puede saber</strong>. No es una biografía ni un homenaje: es una lectura de
+    archivo.</p>
+    <a class="boton" href="recorridos/{recs[0]['id']}/index.html">Empezar el recorrido →</a>
+    <a class="enlace-sec" href="recorridos/index.html">Todos los recorridos</a>
   </div>
 </section>
 
@@ -576,6 +616,76 @@ para verse mejor. Acá es al revés: <strong>estas marcas son el producto</stron
 síntesis que no puede decir dónde falla no es verificable.</div>
 {grupos}</article>""", 0, "incertidumbre.html"))
 
+    # ---- recorridos
+    (SALIDA / "recorridos").mkdir(exist_ok=True)
+    for r in recs:
+        base = SALIDA / "recorridos" / r["id"]
+        base.mkdir(exist_ok=True)
+        total = len(r["estaciones"])
+        prof = 2
+
+        # portada del recorrido
+        (base / "index.html").write_text(pagina(
+            r["titulo"],
+            f"<article class='lectura recorrido'>"
+            f"<p class='kicker'>Recorrido · {total} estaciones</p>"
+            f"<h1>{r['titulo']}</h1>"
+            f"<p class='bajada'>{r['subtitulo']}</p>"
+            + resolver(pandoc(r["intro"]), mapa, prof)
+            + "<h2>Las estaciones</h2>" + _rec.indice_estaciones(r)
+            + _rec.navegacion(r, 0, total)
+            + "</article>", prof, "recorridos", r["subtitulo"]))
+
+        # una página por estación
+        for e in r["estaciones"]:
+            bloques = ""
+            for etiqueta, clave, rotulo in _rec.BLOQUES:
+                if clave not in e["bloques"]:
+                    continue
+                html_b = resolver(pandoc(e["bloques"][clave]), mapa, prof)
+                bloques += (f"<section class='bloque b-{clave}'>"
+                            f"<h2>{rotulo}</h2>{html_b}</section>")
+            (base / f"{e['n']}.html").write_text(pagina(
+                f"{e['titulo']} · {r['titulo']}",
+                f"<article class='lectura recorrido estacion'>"
+                f"<p class='kicker'>Estación {e['n']} de {total} · "
+                f"<a href='index.html'>{r['titulo']}</a></p>"
+                f"<h1>{e['titulo']}</h1>{bloques}"
+                + _rec.navegacion(r, e["n"], total)
+                + "<details class='otras-est'><summary>Todas las estaciones</summary>"
+                + _rec.indice_estaciones(r, e["n"]) + "</details>"
+                + "</article>", prof, "recorridos",
+                f"Estación {e['n']} de {r['titulo']}: {e['titulo']}"))
+
+        # cierre
+        cuerpo_cierre = "".join(
+            f"<h2>{tit}</h2>" + resolver(pandoc(txt), mapa, prof)
+            for tit, txt in r["cierre"])
+        (base / "cierre.html").write_text(pagina(
+            f"Cierre · {r['titulo']}",
+            f"<article class='lectura recorrido'>"
+            f"<p class='kicker'>Cierre · <a href='index.html'>{r['titulo']}</a></p>"
+            f"<h1>Después de los siete documentos</h1>{cuerpo_cierre}"
+            + _rec.navegacion(r, total + 1, total)
+            + "</article>", prof, "recorridos"))
+
+    # índice de recorridos
+    tarjetas_rec = "".join(
+        f"<a class='tarjeta mono' href='{r['id']}/index.html'>"
+        f"<span class='num'>{len(r['estaciones'])} estaciones</span>"
+        f"<h3>{r['titulo']}</h3><p>{r['subtitulo']}</p></a>" for r in recs)
+    (SALIDA / "recorridos" / "index.html").write_text(pagina(
+        "Recorridos", f"""
+<article class='lectura ancho'><p class='kicker'>Capa narrativa</p>
+<h1>Recorridos</h1>
+<p class="bajada">Lecturas guiadas de archivo. Cada estación pone un documento
+en el centro y separa tres cosas que se confunden todo el tiempo: lo que el
+papel dice, lo que se infiere de él y lo que no se puede saber.</p>
+<div class="regla-destacada">Un recorrido no reemplaza al capítulo ni a la ficha:
+las <strong>compone y las enlaza</strong>. Y sólo existe aguas abajo de evidencia
+ya terminada — no se puede narrar lo que todavía no se investigó.</div>
+<div class="rejilla">{tarjetas_rec}</div></article>""", 1, "recorridos"))
+
     # ---- línea de tiempo del corpus
     evs = _eventos.todos()
     con_ficha = sum(1 for e in evs if e["fichas"])
@@ -662,7 +772,7 @@ def main():
     entr = retrolinks(docs)
     filas = incertidumbres(docs)
     render(docs, mapa, entr)
-    indices(docs, filas)
+    indices(docs, filas, mapa)
     for a in (SITIO / "assets").glob("*"):
         shutil.copy(a, SALIDA / "assets" / a.name)
     (SALIDA / ".nojekyll").write_text("")

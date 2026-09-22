@@ -69,6 +69,22 @@ enlaces reales en ambos sentidos.
 | `indices.py` | Regenera el índice de fichas y el consolidado de ChatGPT desde el frontmatter |
 | `qa.py` | Nueve familias de chequeos que **abortan el despliegue** |
 
+### `recorridos/` — capa narrativa
+
+La otra cara de la moneda: el corpus se consulta *y* se recorre. Un recorrido pone un **documento de archivo en el centro de cada estación** y separa lo que el papel dice, lo que se infiere de él y lo que no se puede saber.
+
+| Id | Título | Estaciones |
+|---|---|---|
+| `REC-VALLE-01` | [Quién puede quedar en la historia](recorridos/REC-VALLE-01.md) | 7 |
+
+**Reglas de la capa**, decididas en el debate y verificadas por `qa.py`:
+
+- **Un recorrido va siempre aguas abajo de evidencia ya terminada.** No se narra lo que todavía no se investigó: por eso el primero es sobre Valle, que ya tenía monografía con sus siete documentos transcriptos.
+- **Los cuatro bloques epistémicos son obligatorios** y no pueden ser triviales. Si «inferimos» y «no sabemos» son decorativos, el recorrido convierte lagunas del archivo en certeza afectiva — el *killer mistake* que haría irrelevante todo lo demás.
+- **Cero celdas sin respaldo:** cada estación cita una ficha, capítulo o monografía que existe.
+- **Pasos discretos, no scroll secuestrado.** Para historia densa el problema no es avanzar: es detenerse, releer, retroceder y citar.
+- **Vínculo en los dos sentidos:** la ficha muestra «Aparece en un recorrido» y dice qué estación sostiene.
+
 ### `monografias/` — capa de profundidad
 
 Tercera capa. Los capítulos explican, las fichas prueban, las monografías **desarrollan en profundidad un tema por vez con aparato de archivo propio**: 3.000-6.000 palabras, marcado explícito de inferencia ([DOC] / [INF] / [CIRC]), enlace bidireccional con el capítulo y la ficha correspondientes.
@@ -126,7 +142,7 @@ El dossier fue sometido a una **revisión adversarial con Codex CLI** (21/09/202
 | **0 · Contrato de alcance** | ✅ Congelado en `propuesta-experiencia.md` §6 y §7 |
 | **1 · Integridad** | ✅ Hecha. `dossier/fichas/RUBRICA.md` con criterios falsables, 66/66 fichas auditadas (alta 43→30, media 19→34, baja 4→2), `debatido` movido de `estado` a `tipo`, índices generados por `sitio/indices.py`, y cinco familias de chequeos nuevas en `sitio/qa.py` incluido el linter de vocabulario teleológico |
 | **2 · Línea de tiempo** | ✅ Hecha. 308 hechos en 9 ejes, EDTF Level 1, ancho = imprecisión de la fecha. Sin capa de datos paralela: se deriva de la prosa |
-| **3 · Recorrido de Valle** | ⬜ Pendiente. Siete estaciones, «Quién puede quedar en la historia». Los siete documentos ya están transcriptos en la monografía |
+| **3 · Recorrido de Valle** | ✅ Hecha. `recorridos/REC-VALLE-01.md` — siete estaciones, una página con URL propia cada una, navegación por pasos discretos y teclado. Cada estación separa **sabemos / inferimos / no sabemos** y cita la evidencia que la sostiene; `qa.py` falla si un bloque falta, si el documento no declara fuente, o si lo citado no existe |
 | **4 · Revisión editorial y accesibilidad** | ⬜ Pendiente |
 | **5 · Prueba de lectura auditable** | ⬜ Pendiente. Métrica norte: ≥ 9 de 12 lectores distinguen hecho de inferencia. Requiere lectores reales |
 

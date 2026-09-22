@@ -153,7 +153,8 @@ TELEOLOGICO = [
     r'era inevitable que', r'el fin de la Argentina', r'irremediablemente',
 ]
 for md in sorted(list((RAIZ / 'dossier').rglob('*.md'))
-                 + list((RAIZ / 'monografias').glob('*.md'))):
+                 + list((RAIZ / 'monografias').glob('*.md'))
+                 + list((RAIZ / 'recorridos').glob('*.md'))):
     if md.stem in ('README', 'RUBRICA'):
         continue
     for n, linea in enumerate(md.read_text().split('\n'), 1):
@@ -219,6 +220,72 @@ for _pat, _donde in ((r'class="bajada">\s*(\d+)\s+hechos', 'la bajada'),
 if _linea_html and 'línea de tiempo de la historia argentina' in _linea_html.lower():
     problemas.append('LÍNEA: se presenta como línea de tiempo de la historia '
                      'argentina; es del corpus')
+
+
+
+# ---------------------------------------------------------------------------
+# 10 · Recorridos: la matriz de trazabilidad, ejecutable
+# El killer mistake identificado en el debate es publicar un recorrido que haga
+# sentir como hecho una inferencia narrativa. Si los bloques epistémicos son
+# decorativos, da igual que todo lo demás esté impecable. Esto los vuelve
+# obligatorios y verifica que citen evidencia que existe.
+# ---------------------------------------------------------------------------
+import recorrido as _rc      # noqa: E402
+
+_ids_validos = {f.stem for f in (RAIZ / 'dossier' / 'fichas').glob('*.md')}
+_ids_validos |= {f.stem for f in (RAIZ / 'dossier').glob('[0-9][0-9]-*.md')}
+_ids_validos |= {re.search(r'^id:\s*(.+)$', f.read_text().split('---')[1], re.M).group(1).strip()
+                 for f in (RAIZ / 'monografias').glob('VID-*.md')}
+
+for _r in _rc.todos():
+    _tot = len(_r['estaciones'])
+    if not _tot:
+        problemas.append(f"RECORRIDO {_r['id']}: sin estaciones")
+    for _e in _r['estaciones']:
+        _b = _e['bloques']
+        # los cuatro bloques epistémicos son obligatorios y no pueden ser triviales
+        for _clave, _rotulo in (('documento', 'El documento'), ('escena', 'La escena'),
+                                ('sabemos', 'Sabemos'), ('inferimos', 'Inferimos'),
+                                ('nosabemos', 'No sabemos'),
+                                ('sostiene', 'Qué sostiene esta escena')):
+            _txt = _b.get(_clave, '').strip()
+            if not _txt:
+                problemas.append(f"RECORRIDO {_r['id']} est.{_e['n']}: falta «{_rotulo}»")
+            elif _clave in ('sabemos', 'nosabemos') and len(_txt) < 40:
+                problemas.append(f"RECORRIDO {_r['id']} est.{_e['n']}: «{_rotulo}» es "
+                                 f"demasiado breve para no ser decorativo")
+        # el documento tiene que declarar su fuente
+        if '**Fuente.**' not in _b.get('documento', ''):
+            problemas.append(f"RECORRIDO {_r['id']} est.{_e['n']}: el documento no "
+                             f"declara su fuente")
+        # cero celdas sin respaldo: lo citado tiene que existir
+        _citas = re.findall(r'`([A-Za-z0-9\-]+)`', _b.get('sostiene', ''))
+        _reales = [c for c in _citas if c in _ids_validos]
+        if not _reales:
+            problemas.append(f"RECORRIDO {_r['id']} est.{_e['n']}: «Qué sostiene esta "
+                             f"escena» no cita ninguna ficha, capítulo ni monografía real")
+        for _c in _citas:
+            if _c not in _ids_validos and re.match(r'^(MUJ|VID|ECO|POL|EST|SOC|CUL|INT|IDE|VIO|MET|REC)-', _c):
+                problemas.append(f"RECORRIDO {_r['id']} est.{_e['n']}: cita «{_c}», "
+                                 f"que no existe")
+
+    # la cadena de páginas está completa y navegable
+    _base = D / 'recorridos' / _r['id']
+    for _n in ['index.html', 'cierre.html'] + [f'{i}.html' for i in range(1, _tot + 1)]:
+        if not (_base / _n).exists():
+            problemas.append(f"RECORRIDO {_r['id']}: falta la página {_n}")
+    # cada estación declara su posición en texto, no sólo en gráfico
+    for _i in range(1, _tot + 1):
+        _h = (_base / f'{_i}.html').read_text() if (_base / f'{_i}.html').exists() else ''
+        if f'Estación {_i} de {_tot}' not in _h:
+            problemas.append(f"RECORRIDO {_r['id']} est.{_i}: sin progreso textual")
+
+    # vínculo bidireccional: lo que el recorrido declara tiene que apuntarle de vuelta
+    for _fid in list(_r['fm'].get('fichas', [])):
+        _fh = D / 'fichas' / f'{_fid}.html'
+        if _fh.exists() and 'en-recorridos' not in _fh.read_text():
+            problemas.append(f"RECORRIDO {_r['id']}: la ficha {_fid} no muestra "
+                             f"«Aparece en un recorrido» — el vínculo quedó en un solo sentido")
 
 
 print(f"páginas: {len(list(D.rglob('*.html')))} · problemas: {len(problemas)}")

@@ -290,4 +290,22 @@
 
     pintaE();
   }
+
+  /* ------------------------------------------------- recorrido: teclado */
+  /* Las flechas avanzan y retroceden entre estaciones. El enlace ya existe en
+     el HTML: acá sólo se le da un atajo, así que sin JS no se pierde nada. */
+  var pasos = document.querySelector(".pasos");
+  if (pasos) {
+    document.addEventListener("keydown", function (ev) {
+      if (ev.metaKey || ev.ctrlKey || ev.altKey) { return; }
+      var t = ev.target || {};
+      var tag = (t.tagName || "").toUpperCase();
+      if (tag === "INPUT" || tag === "TEXTAREA" || t.isContentEditable) { return; }
+      var sel = ev.key === "ArrowRight" ? 'a.nav-paso.sig'
+              : ev.key === "ArrowLeft"  ? 'a.nav-paso.prev' : null;
+      if (!sel) { return; }
+      var a = pasos.querySelector(sel);
+      if (a) { ev.preventDefault(); window.location.href = a.getAttribute("href"); }
+    });
+  }
 })();

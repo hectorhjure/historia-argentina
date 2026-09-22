@@ -339,3 +339,80 @@ li.ev.destacada{border-left-color:var(--acento);background:var(--realce)}
 @media (prefers-reduced-motion:reduce){
   .mapa-temporal .m{transition:none}
 }
+
+/* ------------------------------------------------------------- recorridos */
+.recorrido .bajada{font-family:var(--serif)}
+.bloque{margin:2.2rem 0}
+.bloque h2{font-family:var(--sans);font-size:.72rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--tinta-3);border:0;padding:0;margin:0 0 .7rem;
+  font-weight:700}
+
+/* el documento es el objeto central de la estación */
+.b-documento{background:var(--papel-2);border:1px solid var(--borde);
+  border-radius:14px;padding:1.4rem 1.5rem;margin:1.5rem 0 2.5rem}
+.b-documento h2{color:var(--acento)}
+.b-documento blockquote{margin:0 0 .9rem;padding:0 0 0 1.1rem;background:transparent;
+  border-left:3px solid var(--acento);border-radius:0}
+.b-documento blockquote p{font-family:var(--serif);font-size:1.08rem;line-height:1.75;
+  color:var(--tinta)}
+.b-documento > p:last-child{font-size:.82rem;color:var(--tinta-3);margin:0;
+  font-family:var(--sans);line-height:1.5}
+
+.b-escena p{font-size:1.08rem}
+.b-sabemos,.b-inferimos,.b-nosabemos,.b-sostiene{border-left:3px solid var(--borde);
+  padding-left:1rem}
+.b-sabemos{border-left-color:var(--ok)}
+.b-inferimos{border-left-color:var(--duda)}
+.b-nosabemos{border-left-color:var(--alerta)}
+.b-sostiene{border-left-color:var(--frio)}
+.b-sabemos h2{color:var(--ok)}
+.b-inferimos h2{color:var(--duda)}
+.b-nosabemos h2{color:var(--alerta)}
+.b-sostiene h2{color:var(--frio)}
+.b-sabemos li,.b-inferimos li,.b-nosabemos li,.b-sostiene li{font-size:.98rem}
+.b-sostiene li{font-family:var(--sans);font-size:.88rem}
+
+/* navegación por pasos: grande, persistente, con progreso textual */
+.pasos{display:flex;align-items:center;gap:1rem;margin:3rem 0 1.5rem;
+  padding:1rem 0;border-top:1px solid var(--borde);flex-wrap:wrap}
+.nav-paso{display:inline-flex;align-items:center;gap:.45rem;padding:.7rem 1.2rem;
+  border-radius:999px;background:var(--papel-2);border:1px solid var(--borde);
+  color:var(--tinta);text-decoration:none;font-weight:600;font-size:.92rem;
+  min-height:44px}
+.nav-paso:hover{border-color:var(--acento);color:var(--acento)}
+.nav-paso.destacado{background:var(--acento);color:var(--papel);border-color:var(--acento)}
+.nav-paso.destacado:hover{background:var(--acento-2);color:var(--papel)}
+.nav-paso.vacio{flex:0 0 auto;width:0;padding:0;border:0;background:none}
+.nav-paso.sig{margin-left:auto}
+.progreso{display:flex;flex-direction:column;align-items:center;gap:.5rem;
+  font-size:.8rem;color:var(--tinta-3);font-weight:600;order:3;width:100%}
+.puntos{display:flex;gap:.4rem}
+.punto{width:9px;height:9px;border-radius:50%;background:var(--borde);
+  display:block;transition:background .15s}
+.punto:hover{background:var(--tinta-3)}
+.punto.activo{background:var(--acento);transform:scale(1.25)}
+@media (min-width:38rem){.progreso{order:0;width:auto;margin:0 auto}}
+
+.indice-est{display:flex;flex-direction:column;gap:2px;margin:1rem 0}
+.fila-est{display:flex;gap:.9rem;align-items:baseline;padding:.65rem .8rem;
+  border-radius:8px;text-decoration:none;color:var(--tinta);background:var(--papel-2)}
+.fila-est:hover{background:var(--papel-3);color:var(--tinta)}
+.fila-est.activa{background:var(--realce);border-left:3px solid var(--acento)}
+.fila-est .num{font-family:var(--mono);font-size:.78rem;color:var(--acento);
+  font-weight:700;flex:0 0 1.2rem}
+.fila-est span:last-child{font-family:var(--serif);font-size:.98rem}
+.otras-est{margin-top:1rem}
+.otras-est summary{cursor:pointer;font-size:.85rem;color:var(--tinta-3);
+  font-weight:600;padding:.4rem 0}
+.otras-est summary:hover{color:var(--acento)}
+.enlace-sec{display:inline-block;margin-left:1rem;font-size:.85rem;font-weight:600;
+  text-decoration:none}
+
+.en-recorridos{margin-top:2.5rem;padding:1rem 1.2rem;background:var(--papel-2);
+  border:1px solid var(--borde);border-left:3px solid var(--acento);
+  border-radius:0 10px 10px 0}
+.en-recorridos h2{font-family:var(--sans);font-size:.72rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--tinta-3);border:0;padding:0;margin:0 0 .5rem}
+.en-recorridos a{font-family:var(--serif);font-size:1rem;font-weight:600}
+.en-recorridos p{font-size:.85rem;color:var(--tinta-2);margin:.3rem 0 0;
+  font-family:var(--sans)}
