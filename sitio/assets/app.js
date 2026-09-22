@@ -202,4 +202,92 @@
     entradaF.addEventListener("input", pinta);
     pinta();
   }
+
+  /* ------------------------------------------- línea de tiempo del corpus */
+  /* Los hechos y el SVG ya vienen renderizados. Acá sólo se filtran y se
+     sincronizan las dos vistas del mismo dato. */
+  var entradaE = document.getElementById("fe");
+  var listaE = document.getElementById("lista-eventos");
+  var conteoE = document.getElementById("conteo-ev");
+  var vacioE = document.getElementById("vacio-ev");
+  var mapa = document.querySelector(".mapa-temporal");
+
+  if (listaE) {
+    var hechos = [].slice.call(listaE.querySelectorAll("li.ev"));
+    var cortes = [].slice.call(listaE.querySelectorAll("h2.corte"));
+    var listas = [].slice.call(listaE.querySelectorAll("ol.eventos"));
+    var totalE = hechos.length;
+    var ejes = {};
+    var marcas = mapa ? [].slice.call(mapa.querySelectorAll("rect.m")) : [];
+    var porEv = {};
+    marcas.forEach(function (m) { porEv[m.getAttribute("data-ev")] = m; });
+
+    function pintaE() {
+      var q = normalizar(entradaE ? entradaE.value : "").trim();
+      var activos = Object.keys(ejes);
+      var visibles = 0;
+
+      hechos.forEach(function (li) {
+        var okEje = !activos.length || ejes[li.getAttribute("data-eje")];
+        var okTxt = !q || normalizar(li.getAttribute("data-busq")).indexOf(q) !== -1;
+        var ok = okEje && okTxt;
+        li.hidden = !ok;
+        var m = porEv[li.getAttribute("data-id")];
+        if (m) { m.style.display = ok ? "" : "none"; }
+        if (ok) { visibles++; }
+      });
+
+      // un grupo sin hechos visibles se esconde entero
+      listas.forEach(function (ol, i) {
+        var algo = [].slice.call(ol.children).some(function (li) { return !li.hidden; });
+        ol.hidden = !algo;
+        if (cortes[i]) { cortes[i].hidden = !algo; }
+      });
+
+      // apagar el eje entero en el SVG cuando está filtrado fuera
+      if (mapa) {
+        [].slice.call(mapa.querySelectorAll("g.eje")).forEach(function (g) {
+          var dentro = !activos.length || ejes[g.getAttribute("data-eje")];
+          g.classList.toggle("apagado", !dentro);
+        });
+      }
+
+      conteoE.textContent = visibles === totalE
+        ? totalE + " hechos"
+        : visibles + " de " + totalE + " hechos";
+      if (vacioE) { vacioE.hidden = visibles !== 0; }
+    }
+
+    var chipsE = document.querySelectorAll(".chip-eje");
+    [].slice.call(chipsE).forEach(function (b) {
+      b.addEventListener("click", function () {
+        var k = b.getAttribute("data-eje");
+        if (ejes[k]) { delete ejes[k]; b.setAttribute("aria-pressed", "false"); }
+        else { ejes[k] = true; b.setAttribute("aria-pressed", "true"); }
+        pintaE();
+      });
+    });
+    if (entradaE) { entradaE.addEventListener("input", pintaE); }
+
+    // clic en el mapa -> destacar y traer el hecho a la vista
+    if (mapa) {
+      mapa.addEventListener("click", function (ev) {
+        var r = ev.target && ev.target.getAttribute
+          ? ev.target.getAttribute("data-ev") : null;
+        if (!r) { return; }
+        hechos.forEach(function (li) { li.classList.remove("destacada"); });
+        marcas.forEach(function (m) { m.classList.remove("destacada"); });
+        var li = listaE.querySelector('li.ev[data-id="' + r + '"]');
+        if (li && !li.hidden) {
+          li.classList.add("destacada");
+          if (porEv[r]) { porEv[r].classList.add("destacada"); }
+          li.scrollIntoView({ block: "center",
+            behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+              ? "auto" : "smooth" });
+        }
+      });
+    }
+
+    pintaE();
+  }
 })();

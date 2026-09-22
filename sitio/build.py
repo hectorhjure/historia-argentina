@@ -25,6 +25,10 @@ import subprocess
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import eventos as _eventos   # noqa: E402
+import linea as _linea       # noqa: E402
+
 RAIZ = Path(__file__).resolve().parent.parent
 SITIO = RAIZ / "sitio"
 SALIDA = RAIZ / "docs"
@@ -271,7 +275,8 @@ def incertidumbres(docs):
 
 # ------------------------------------------------------------- plantilla
 
-NAV = [("", "Portada"), ("capitulos/", "Capítulos"), ("fichas/", "Fichas"),
+NAV = [("", "Portada"), ("linea.html", "Línea de tiempo"),
+       ("capitulos/", "Capítulos"), ("fichas/", "Fichas"),
        ("monografias/", "Monografías"), ("incertidumbre.html", "Incertidumbre")]
 
 
@@ -375,6 +380,7 @@ def indices(docs, filas):
     fichas = [d for d in docs if d["capa"] == "ficha"]
     monos = [d for d in docs if d["capa"] == "monografia"]
     palabras = sum(len(d["cuerpo"].split()) for d in docs)
+    n_eventos = len(_eventos.todos())
 
     # ---- portada
     tarjetas = "".join(f"""
@@ -404,6 +410,7 @@ def indices(docs, filas):
     <div><strong>{len(caps)}</strong><span>capítulos</span></div>
     <div><strong>{len(fichas)}</strong><span>fichas de evidencia</span></div>
     <div><strong>{len(monos)}</strong><span>monografía{'s' if len(monos)!=1 else ''}</span></div>
+    <div><strong>{n_eventos}</strong><span>hechos fechados</span></div>
     <div><strong>{len(filas)}</strong><span>límites declarados</span></div>
   </div>
 </section>
@@ -423,6 +430,18 @@ def indices(docs, filas):
       <h3>Monografías</h3><p>Desarrollos con aparato de archivo propio. Cuando una
       monografía contradice a un capítulo, <strong>manda la monografía</strong>.</p>
       <a href="monografias/index.html">Ver monografías →</a></div>
+  </div>
+</section>
+
+<section class="destacado-incert linea-destacada">
+  <div>
+    <p class="kicker">Vista del corpus</p>
+    <h2>Línea de tiempo</h2>
+    <p>{n_eventos} hechos fechados en nueve ejes, de 1500 a 2026. <strong>El ancho de
+    cada marca es la precisión de su fecha</strong>, no su importancia: lo que se conoce
+    al año es una marca fina, lo que se conoce a la década es una banda. Se genera
+    leyendo las cronologías del dossier, así que no puede contradecirlas.</p>
+    <a class="boton" href="linea.html">Recorrer la línea →</a>
   </div>
 </section>
 
@@ -556,6 +575,63 @@ seguro, reunidos en un solo lugar. Ninguno está escondido en una nota al pie.</
 para verse mejor. Acá es al revés: <strong>estas marcas son el producto</strong>. Una
 síntesis que no puede decir dónde falla no es verificable.</div>
 {grupos}</article>""", 0, "incertidumbre.html"))
+
+    # ---- línea de tiempo del corpus
+    evs = _eventos.todos()
+    con_ficha = sum(1 for e in evs if e["fichas"])
+    con_ancho = sum(1 for e in evs if e["fecha"].extension > 0)
+    (SALIDA / "linea.html").write_text(
+        pagina("Línea de tiempo del corpus", f"""
+<article class='lectura ancho'>
+<p class='kicker'>Vista del corpus</p>
+<h1>Línea de tiempo del corpus</h1>
+<p class="bajada">{len(evs)} hechos extraídos de las cronologías del dossier,
+distribuidos en nueve ejes. <strong>El ancho de cada marca es la precisión de su
+fecha</strong>, no su importancia.</p>
+
+<div class="regla-destacada">
+<strong>Es la línea de tiempo del corpus, no de la historia argentina.</strong>
+Un vacío acá significa que <em>este</em> corpus no registró nada en ese punto —no que
+no haya pasado nada—. La regla de selección es simple y verificable: se incluye todo
+hecho fechado que aparezca en <code>01-timeline-alto-nivel.md</code> o en las
+cronologías temáticas de <code>11-timelines-por-categoria.md</code>, y nada más.
+<strong>No hay una base de datos aparte:</strong> esta página se genera leyendo esos
+dos capítulos, así que no puede contradecirlos.
+</div>
+
+<div class="leyenda">
+  <span><i class="mu"></i> fecha de un año</span>
+  <span><i class="mu ext"></i> la fecha abarca varios años: el ancho es la imprecisión</span>
+  <span><i class="mu aprox"></i> fecha aproximada</span>
+</div>
+
+{_linea.svg(evs)}
+
+<div class="filtros">
+  <input id="fe" type="search" placeholder="Filtrar hechos por texto o año…"
+         aria-label="Filtrar hechos">
+  <div class="chips">{_linea.chips()}</div>
+</div>
+<p id="conteo-ev" class="tenue">{len(evs)} hechos</p>
+
+<div id="lista-eventos">
+{_linea.lista(evs)}
+</div>
+<p id="vacio-ev" class="tenue" hidden>Ningún hecho coincide con ese filtro.</p>
+
+<h2>Qué no hace esta página</h2>
+<p>No dibuja flechas causales: sólo las habría si el corpus declarara una relación
+causal explícita, y hoy casi no lo hace. No tiene mapa, porque los datasets de fronteras
+históricas disponibles no cubren 1810-1885 y poner hechos del siglo XIX sobre un mapa
+moderno <strong>afirma</strong> una territorialidad que no existía. Y no muestra
+densidad documental por eje: esa cifra mediría qué se cargó acá, no qué quedó
+registrado en los archivos.</p>
+<p class="tenue">De los {len(evs)} hechos, {con_ancho} tienen fecha imprecisa y
+{con_ficha} tienen al menos una ficha de evidencia vinculada — el vínculo lo declara
+la ficha en su <code>prosa_relacionada</code>, no se infiere por cercanía temporal.</p>
+</article>""", 0, "linea.html",
+               f"{len(evs)} hechos fechados del corpus de historia argentina, "
+               f"con la precisión de cada fecha representada como ancho."))
 
     # ---- página de la rúbrica
     rub = (RAIZ / "dossier" / "fichas" / "RUBRICA.md").read_text()

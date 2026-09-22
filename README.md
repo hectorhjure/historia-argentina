@@ -58,6 +58,17 @@ enlaces reales en ambos sentidos.
 | `14-regimenes-estadisticos.md` | Reglas para usar cifras argentinas: rupturas de series y auditoría de los números del propio dossier |
 | `fichas/` | **66 fichas de evidencia**: una por afirmación portante, autocontenida, con fuente, estado y límite embebidos |
 
+### `sitio/` — generador
+
+| Archivo | Qué hace |
+|---|---|
+| `build.py` | Ensambla las 89 páginas desde el markdown |
+| `edtf.py` | Convierte la notación histórica en español (`s. XVI-XVII`, `c. 1766`, `1976-83`) a [EDTF Level 1](https://www.loc.gov/standards/datetime/edtf.html), el estándar de la Library of Congress para fechas imprecisas. Trae su propia batería de pruebas |
+| `eventos.py` | Extrae los hechos de la línea de tiempo **leyendo la prosa del dossier**. No hay base de datos aparte: los capítulos son la única fuente de verdad, así que la línea no puede contradecirlos |
+| `linea.py` | Dibuja el mapa temporal en SVG y la lista cronológica |
+| `indices.py` | Regenera el índice de fichas y el consolidado de ChatGPT desde el frontmatter |
+| `qa.py` | Nueve familias de chequeos que **abortan el despliegue** |
+
 ### `monografias/` — capa de profundidad
 
 Tercera capa. Los capítulos explican, las fichas prueban, las monografías **desarrollan en profundidad un tema por vez con aparato de archivo propio**: 3.000-6.000 palabras, marcado explícito de inferencia ([DOC] / [INF] / [CIRC]), enlace bidireccional con el capítulo y la ficha correspondientes.

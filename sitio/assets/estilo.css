@@ -242,3 +242,100 @@ ul.incert code{font-size:.75rem}
 }
 @media print{.barra,.pie,#tema,.buscador,.filtros{display:none}
   .lectura{width:100%}a{color:inherit;text-decoration:none}}
+
+/* ------------------------------------------------- línea de tiempo del corpus */
+:root{
+  --e-estructural:#9a3412; --e-economico:#166534; --e-violencia:#9f1239;
+  --e-relevante:#78716c;   --e-educacion:#1d4ed8; --e-salud:#0e7490;
+  --e-cultura:#7e22ce;     --e-mujeres:#be185d;   --e-mundo:#a16207;
+}
+:root:not([data-theme="light"]){}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --e-estructural:#fb923c; --e-economico:#4ade80; --e-violencia:#fb7185;
+  --e-relevante:#a8a29e;   --e-educacion:#60a5fa; --e-salud:#22d3ee;
+  --e-cultura:#c084fc;     --e-mujeres:#f472b6;   --e-mundo:#fbbf24;
+}}
+:root[data-theme="dark"]{
+  --e-estructural:#fb923c; --e-economico:#4ade80; --e-violencia:#fb7185;
+  --e-relevante:#a8a29e;   --e-educacion:#60a5fa; --e-salud:#22d3ee;
+  --e-cultura:#c084fc;     --e-mujeres:#f472b6;   --e-mundo:#fbbf24;
+}
+
+.leyenda{display:flex;flex-wrap:wrap;gap:.6rem 1.4rem;margin:1.5rem 0 .5rem;
+  font-size:.8rem;color:var(--tinta-2)}
+.leyenda span{display:flex;align-items:center;gap:.45rem}
+.leyenda i.mu{display:inline-block;width:10px;height:5px;border-radius:2px;
+  background:var(--tinta-2)}
+.leyenda i.mu.ext{width:34px}
+.leyenda i.mu.aprox{width:22px;opacity:.5;
+  background:repeating-linear-gradient(90deg,var(--tinta-2) 0 2px,transparent 2px 4px)}
+
+.mapa-temporal{width:100%;height:auto;display:block;margin:.5rem 0 2rem;
+  background:var(--papel-2);border:1px solid var(--borde);border-radius:12px;
+  padding:.5rem 0}
+.mapa-temporal .tick{stroke:var(--borde);stroke-width:1}
+.mapa-temporal .tick-rot{fill:var(--tinta-3);font:500 9px var(--sans);text-anchor:middle}
+.mapa-temporal .eje-rot{fill:var(--tinta-3);font:600 8.5px var(--sans);
+  letter-spacing:.06em;text-transform:uppercase}
+.mapa-temporal .eje-n{fill:var(--tinta-3);opacity:.6;font-weight:500}
+.mapa-temporal .m{fill:var(--tinta-2);opacity:.85}
+.mapa-temporal .m.aprox{opacity:.45}
+.mapa-temporal .m.incierta{fill:none;stroke:var(--tinta-2);stroke-width:1;
+  stroke-dasharray:2 1.5}
+.mapa-temporal .eje[data-eje="estructural"] .m{fill:var(--e-estructural)}
+.mapa-temporal .eje[data-eje="economico"]   .m{fill:var(--e-economico)}
+.mapa-temporal .eje[data-eje="violencia"]   .m{fill:var(--e-violencia)}
+.mapa-temporal .eje[data-eje="relevante"]   .m{fill:var(--e-relevante)}
+.mapa-temporal .eje[data-eje="educacion"]   .m{fill:var(--e-educacion)}
+.mapa-temporal .eje[data-eje="salud"]       .m{fill:var(--e-salud)}
+.mapa-temporal .eje[data-eje="cultura"]     .m{fill:var(--e-cultura)}
+.mapa-temporal .eje[data-eje="mujeres"]     .m{fill:var(--e-mujeres)}
+.mapa-temporal .eje[data-eje="mundo"]       .m{fill:var(--e-mundo)}
+.mapa-temporal .eje.apagado{opacity:.12}
+.mapa-temporal .m{cursor:pointer;transition:opacity .12s}
+.mapa-temporal .m.destacada{stroke:var(--tinta);stroke-width:1.2}
+
+h2.corte{display:flex;align-items:baseline;gap:.6rem;font-family:var(--serif);
+  font-size:1.25rem;margin:2.2rem 0 .6rem;padding-top:.7rem;
+  border-top:1px solid var(--borde)}
+ol.eventos{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:2px}
+li.ev{display:flex;gap:.9rem;padding:.55rem .7rem;border-radius:8px;
+  border-left:3px solid transparent}
+li.ev:nth-child(odd){background:var(--papel-2)}
+li.ev:hover{background:var(--papel-3)}
+li.ev.destacada{border-left-color:var(--acento);background:var(--realce)}
+.ev-fecha{flex:0 0 7.5rem;display:flex;align-items:baseline;gap:.3rem}
+.ev-fecha code{background:transparent;padding:0;font-size:.82rem;color:var(--tinta-2);
+  font-weight:600}
+.rango{color:var(--acento);font-weight:700;font-size:.8rem;cursor:help}
+.ev-cuerpo{flex:1;min-width:0}
+.ev-cuerpo p{font-family:var(--serif);font-size:.96rem;margin:0;line-height:1.5}
+.ev-meta{display:flex;flex-wrap:wrap;align-items:center;gap:.35rem;margin-top:.3rem}
+.ev-meta .badge{font-size:.65rem;padding:.12rem .45rem;border:0;color:var(--papel)}
+.badge.eje-estructural{background:var(--e-estructural)}
+.badge.eje-economico{background:var(--e-economico)}
+.badge.eje-violencia{background:var(--e-violencia)}
+.badge.eje-relevante{background:var(--e-relevante)}
+.badge.eje-educacion{background:var(--e-educacion)}
+.badge.eje-salud{background:var(--e-salud)}
+.badge.eje-cultura{background:var(--e-cultura)}
+.badge.eje-mujeres{background:var(--e-mujeres)}
+.badge.eje-mundo{background:var(--e-mundo)}
+.cita-ev{font-size:.7rem;color:var(--tinta-3);font-style:italic}
+.chip-ficha{font-family:var(--mono);font-size:.64rem;padding:.12rem .4rem;
+  border-radius:4px;background:var(--papel-3);color:var(--acento);text-decoration:none}
+.chip-ficha:hover{background:var(--acento);color:var(--papel)}
+.ev-origen{font-size:.68rem;color:var(--tinta-3);text-decoration:none;
+  border-bottom:1px dotted var(--tinta-3)}
+.ev-origen:hover{color:var(--acento)}
+.chip-eje[aria-pressed="true"]{background:var(--acento);border-color:var(--acento);
+  color:var(--papel)}
+
+@media (max-width:40rem){
+  li.ev{flex-direction:column;gap:.2rem}
+  .ev-fecha{flex:none}
+  .mapa-temporal{padding:.25rem 0}
+}
+@media (prefers-reduced-motion:reduce){
+  .mapa-temporal .m{transition:none}
+}

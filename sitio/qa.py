@@ -174,6 +174,53 @@ if _r.returncode != 0:
     problemas.append('DERIVA: ' + (_r.stderr or _r.stdout).strip().replace('\n', ' / '))
 
 
+
+# ---------------------------------------------------------------------------
+# 9 · Línea de tiempo: nada se dibuja sin origen verificable
+# ---------------------------------------------------------------------------
+sys.path.insert(0, str(RAIZ / 'sitio'))
+import edtf as _edtf          # noqa: E402
+import eventos as _ev         # noqa: E402
+
+if _edtf._probar_silencioso():
+    problemas.append('EDTF: la batería de pruebas de sitio/edtf.py falla')
+
+_evs = _ev.todos()
+_linea_html = (D / 'linea.html').read_text() if (D / 'linea.html').exists() else ''
+
+# cada hecho tiene fecha resuelta y un capítulo de origen
+for e in _evs:
+    if e['fecha'] is None:
+        problemas.append(f"LÍNEA {e['id']}: sin fecha resuelta")
+    if not e.get('destino'):
+        problemas.append(f"LÍNEA {e['id']}: sin capítulo de origen — "
+                         f"no puede dibujarse un hecho sin procedencia")
+
+# marcas del SVG == hechos de la lista == cifra declarada
+_marcas = len(re.findall(r'class="m[^"]*" x=', _linea_html))
+_items  = len(re.findall(r'class="ev" data-', _linea_html))
+if _linea_html and not (_marcas == _items == len(_evs)):
+    problemas.append(f"LÍNEA: descalce — {len(_evs)} hechos extraídos, "
+                     f"{_marcas} marcas en el SVG, {_items} en la lista")
+# La cifra aparece en dos lugares del texto; las dos tienen que coincidir.
+# Si el patrón deja de encontrarla, eso también es un fallo: un chequeo que no
+# mira nada pasa siempre.
+for _pat, _donde in ((r'class="bajada">\s*(\d+)\s+hechos', 'la bajada'),
+                     (r'id="conteo-ev"[^>]*>\s*(\d+)\s+hechos', 'el contador')):
+    _m = re.search(_pat, _linea_html)
+    if _linea_html and not _m:
+        problemas.append(f"LÍNEA: no encuentro la cifra declarada en {_donde} — "
+                         f"el chequeo quedó mirando otra cosa")
+    elif _m and int(_m.group(1)) != len(_evs):
+        problemas.append(f"LÍNEA: {_donde} declara {_m.group(1)} hechos, "
+                         f"reales {len(_evs)}")
+
+# el título no debe prometer más de lo que es
+if _linea_html and 'línea de tiempo de la historia argentina' in _linea_html.lower():
+    problemas.append('LÍNEA: se presenta como línea de tiempo de la historia '
+                     'argentina; es del corpus')
+
+
 print(f"páginas: {len(list(D.rglob('*.html')))} · problemas: {len(problemas)}")
 for p in problemas[:25]: print("  ✗", p)
 if not problemas: print("  ✓ todo limpio")
