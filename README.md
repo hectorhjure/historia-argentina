@@ -117,6 +117,21 @@ El dossier fue sometido a una **revisión adversarial con Codex CLI** (21/09/202
 
 > **Nota de secuencia.** El plan ponía las fichas primero. Se ejecutaron al final, a propósito: como en esta pasada se reescribieron capítulos enteros, extraerlas antes habría significado rehacerlas. Reflejan el texto ya corregido.
 
+## Capa de experiencia — estado de ejecución
+
+`propuesta-experiencia.md` consolida otras tres rondas contra Codex (21/09/2026). Trazabilidad en `debate-experiencia/`. Veredicto: **GO con una v1 chica y cerrada.**
+
+| Fase | Estado |
+|---|---|
+| **0 · Contrato de alcance** | ✅ Congelado en `propuesta-experiencia.md` §6 y §7 |
+| **1 · Integridad** | ✅ Hecha. `dossier/fichas/RUBRICA.md` con criterios falsables, 66/66 fichas auditadas (alta 43→30, media 19→34, baja 4→2), `debatido` movido de `estado` a `tipo`, índices generados por `sitio/indices.py`, y cinco familias de chequeos nuevas en `sitio/qa.py` incluido el linter de vocabulario teleológico |
+| **2 · Línea de tiempo** | ✅ Hecha. 308 hechos en 9 ejes, EDTF Level 1, ancho = imprecisión de la fecha. Sin capa de datos paralela: se deriva de la prosa |
+| **3 · Recorrido de Valle** | ⬜ Pendiente. Siete estaciones, «Quién puede quedar en la historia». Los siete documentos ya están transcriptos en la monografía |
+| **4 · Revisión editorial y accesibilidad** | ⬜ Pendiente |
+| **5 · Prueba de lectura auditable** | ⬜ Pendiente. Métrica norte: ≥ 9 de 12 lectores distinguen hecho de inferencia. Requiere lectores reales |
+
+**Fuera de alcance por decisión, no por olvido:** mapa (los datasets de fronteras históricas no cubren 1810-1885), flechas causales (el corpus casi no declara relaciones causales explícitas), franja de densidad documental (mediría la carga del autor, no el archivo), cortes transversales «¿qué pasaba en 1913?» (cada año es una monografía de comparabilidad).
+
 ## Advertencias de uso
 
 - El corpus académico local (Cambridge History of Latin America, Romero, manual del CNBA) **termina alrededor de 1990-1995**. Todo lo posterior en el dossier se apoya en fuentes web y está marcado como tal.
