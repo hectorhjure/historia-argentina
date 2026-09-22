@@ -511,7 +511,7 @@ def indices(docs, filas, mapa):
     # ---- índice de capítulos
     lista = "".join(f"""
       <a class="fila-cap" href="{c['slug']}.html"><span class="num">{c['slug'][:2]}</span>
-      <div><h3>{c['titulo']}</h3>
+      <div><h2>{c['titulo']}</h2>
       <p>{texto_plano(pandoc(re.sub(r'^#.+$','',c['cuerpo'],count=1,flags=re.M)))[:200]}…</p>
       </div></a>""" for c in caps)
     (SALIDA / "capitulos" / "index.html").write_text(
@@ -573,7 +573,7 @@ con criterios falsables — <a href="rubrica.html">ver la rúbrica</a>.</div>
     cola_html = resolver(pandoc(cola.group(1)), {}, 1) if cola else ""
     tarj = "".join(f"""
       <a class="tarjeta mono" href="{m['fm'].get('id', m['slug'])}.html">
-        <span class="num">{m['fm'].get('id','')}</span><h3>{m['titulo']}</h3>
+        <span class="num">{m['fm'].get('id','')}</span><h2>{m['titulo']}</h2>
         <p>{texto_plano(pandoc(m['cuerpo']))[:220]}…</p></a>""" for m in monos)
     (SALIDA / "monografias" / "index.html").write_text(
         pagina("Monografías", f"""
@@ -673,7 +673,7 @@ síntesis que no puede decir dónde falla no es verificable.</div>
     tarjetas_rec = "".join(
         f"<a class='tarjeta mono' href='{r['id']}/index.html'>"
         f"<span class='num'>{len(r['estaciones'])} estaciones</span>"
-        f"<h3>{r['titulo']}</h3><p>{r['subtitulo']}</p></a>" for r in recs)
+        f"<h2>{r['titulo']}</h2><p>{r['subtitulo']}</p></a>" for r in recs)
     (SALIDA / "recorridos" / "index.html").write_text(pagina(
         "Recorridos", f"""
 <article class='lectura ancho'><p class='kicker'>Capa narrativa</p>

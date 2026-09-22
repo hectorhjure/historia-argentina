@@ -95,10 +95,26 @@ def svg(eventos):
         f'<text class="tick-rot" x="{_x(a):.1f}" y="{alto_total - 6}">{a}</text>'
         for a in DECADAS_ROTULO)
 
-    return (f'<svg class="mapa-temporal" viewBox="0 0 {ANCHO} {alto_total}" '
-            f'role="img" aria-label="Mapa temporal del corpus, {INICIO} a {FIN}, '
-            f'por eje temático" preserveAspectRatio="xMidYMid meet">'
-            f'{ticks}{"".join(capas)}</svg>')
+    # A 390 px de pantalla, el viewBox de 1060 se escala a 0,37: una marca de
+    # 2,2 unidades queda en 0,8 px —invisible— y los rótulos de eje en 3,1 px.
+    # Por eso el mapa no se encoge indefinidamente: por debajo de cierto ancho
+    # se desplaza en horizontal. Y como ocultar el desborde sin avisar es peor
+    # que el desborde, va con degradados en los bordes, aviso textual y la
+    # rueda vertical redirigida.
+    svg_el = (f'<svg class="mapa-temporal" viewBox="0 0 {ANCHO} {alto_total}" '
+              f'role="img" aria-label="Mapa temporal del corpus, {INICIO} a {FIN}, '
+              f'por eje temático. La lista de hechos que sigue es el equivalente '
+              f'accesible de este gráfico." '
+              f'preserveAspectRatio="xMidYMid meet">'
+              f'{ticks}{"".join(capas)}</svg>')
+    return (f'<div class="mapa-envoltorio">'
+            f'<div class="mapa-scroll" id="mapa-scroll" tabindex="0" role="group" '
+            f'aria-label="Mapa temporal, desplazable en horizontal">{svg_el}</div>'
+            f'<span class="borde-izq" aria-hidden="true"></span>'
+            f'<span class="borde-der" aria-hidden="true"></span>'
+            f'<p class="aviso-scroll">Deslizá el mapa en horizontal para ver todo el '
+            f'período. La lista de abajo tiene los mismos hechos en texto.</p>'
+            f'</div>')
 
 
 def lista(eventos, prof=0):
@@ -134,7 +150,9 @@ def lista(eventos, prof=0):
                 f'<div class="ev-cuerpo"><p>{html.escape(e["titulo"])}</p>'
                 f'<span class="ev-meta"><span class="badge eje-{e["eje"]}">'
                 f'{dict(EJES)[e["eje"]]}</span>{cita}{fichas}'
-                f'<a class="ev-origen" href="{arriba}{e["destino"]}">origen</a>'
+                f'<a class="ev-origen" href="{arriba}{e["destino"]}" '
+                f'aria-label="Ver «{html.escape(e["titulo"][:70], quote=True)}» '
+                f'en su capítulo de origen">origen</a>'
                 f'</span></div></li>')
         salida.append("</ol>")
     return "\n".join(salida)

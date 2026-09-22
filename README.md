@@ -67,7 +67,9 @@ enlaces reales en ambos sentidos.
 | `eventos.py` | Extrae los hechos de la línea de tiempo **leyendo la prosa del dossier**. No hay base de datos aparte: los capítulos son la única fuente de verdad, así que la línea no puede contradecirlos |
 | `linea.py` | Dibuja el mapa temporal en SVG y la lista cronológica |
 | `indices.py` | Regenera el índice de fichas y el consolidado de ChatGPT desde el frontmatter |
-| `qa.py` | Nueve familias de chequeos que **abortan el despliegue** |
+| `qa.py` | Once familias de chequeos que **abortan el despliegue** |
+| `a11y.py` | Auditoría de accesibilidad: contraste WCAG calculado, jerarquía de encabezados, landmarks, blancos táctiles, enlaces ambiguos, desborde horizontal |
+| `recorrido.py` | Arma las estaciones del recorrido, una página con URL propia cada una |
 
 ### `recorridos/` — capa narrativa
 
@@ -143,7 +145,7 @@ El dossier fue sometido a una **revisión adversarial con Codex CLI** (21/09/202
 | **1 · Integridad** | ✅ Hecha. `dossier/fichas/RUBRICA.md` con criterios falsables, 66/66 fichas auditadas (alta 43→30, media 19→34, baja 4→2), `debatido` movido de `estado` a `tipo`, índices generados por `sitio/indices.py`, y cinco familias de chequeos nuevas en `sitio/qa.py` incluido el linter de vocabulario teleológico |
 | **2 · Línea de tiempo** | ✅ Hecha. 308 hechos en 9 ejes, EDTF Level 1, ancho = imprecisión de la fecha. Sin capa de datos paralela: se deriva de la prosa |
 | **3 · Recorrido de Valle** | ✅ Hecha. `recorridos/REC-VALLE-01.md` — siete estaciones, una página con URL propia cada una, navegación por pasos discretos y teclado. Cada estación separa **sabemos / inferimos / no sabemos** y cita la evidencia que la sostiene; `qa.py` falla si un bloque falta, si el documento no declara fuente, o si lo citado no existe |
-| **4 · Revisión editorial y accesibilidad** | ⬜ Pendiente |
+| **4 · Revisión editorial y accesibilidad** | ✅ Hecha. Nuevo `sitio/a11y.py`: contraste WCAG calculado en los dos temas, jerarquía de encabezados, landmarks, blancos táctiles, texto de enlace ambiguo y desborde horizontal con señales. Corregido el mapa temporal en móvil, que era ilegible. Nuevo chequeo de **deriva narrativa**: todo anclaje factual de la prosa del recorrido tiene que aparecer en su monografía |
 | **5 · Prueba de lectura auditable** | ⬜ Pendiente. Métrica norte: ≥ 9 de 12 lectores distinguen hecho de inferencia. Requiere lectores reales |
 
 **Fuera de alcance por decisión, no por olvido:** mapa (los datasets de fronteras históricas no cubren 1810-1885), flechas causales (el corpus casi no declara relaciones causales explícitas), franja de densidad documental (mediría la carga del autor, no el archivo), cortes transversales «¿qué pasaba en 1913?» (cada año es una monografía de comparabilidad).

@@ -308,4 +308,31 @@
       if (a) { ev.preventDefault(); window.location.href = a.getAttribute("href"); }
     });
   }
+
+  /* --------------------------------------- mapa temporal: señales de desborde */
+  /* Un contenedor que se desplaza sin decirlo esconde la única pista de que hay
+     más contenido. Acá los degradados aparecen sólo del lado donde queda algo. */
+  var envoltorio = document.querySelector(".mapa-envoltorio");
+  var scroller = document.getElementById("mapa-scroll");
+  if (envoltorio && scroller) {
+    function señales() {
+      var max = scroller.scrollWidth - scroller.clientWidth;
+      envoltorio.classList.toggle("desborda", max > 4);
+      envoltorio.classList.toggle("hay-izq", scroller.scrollLeft > 4);
+      envoltorio.classList.toggle("hay-der", scroller.scrollLeft < max - 4);
+    }
+    scroller.addEventListener("scroll", señales, { passive: true });
+    window.addEventListener("resize", señales);
+    // rueda vertical -> desplazamiento horizontal, sólo si hay adónde ir
+    scroller.addEventListener("wheel", function (ev) {
+      var max = scroller.scrollWidth - scroller.clientWidth;
+      if (max <= 4 || Math.abs(ev.deltaY) <= Math.abs(ev.deltaX)) { return; }
+      var siguiente = scroller.scrollLeft + ev.deltaY;
+      if (siguiente > 0 && siguiente < max) {
+        ev.preventDefault();
+        scroller.scrollLeft = siguiente;
+      }
+    }, { passive: false });
+    señales();
+  }
 })();

@@ -288,6 +288,50 @@ for _r in _rc.todos():
                              f"«Aparece en un recorrido» — el vínculo quedó en un solo sentido")
 
 
+
+# ---------------------------------------------------------------------------
+# 11 · Deriva narrativa: la prosa del recorrido no puede exceder su fuente
+# Riesgo nº 2 de la propuesta (probabilidad media, impacto muy alto): que los
+# conectores narrativos afirmen más de lo que la evidencia sostiene. Se
+# verifica que todo anclaje factual —años, leyes, cifras, nombres propios— de
+# los bloques de prosa aparezca en la monografía de la que deriva el recorrido.
+# ---------------------------------------------------------------------------
+def _anclas(frase):
+    """Años de 3-4 cifras, números de ley y nombres propios en medio de la
+    oración. Se excluye la palabra inicial: una mayúscula de arranque no es un
+    nombre propio, y contarla llenaba el informe de falsos positivos."""
+    # Hay que descontar también el guion de los ítems de lista: sin eso, la
+    # primera palabra de cada viñeta se contaba como nombre propio.
+    limpia = re.sub(r'^[\s\-*•]+', '', frase.strip())
+    sin_inicial = re.sub(r'^[¿¡"«(]*[A-ZÁÉÍÓÚÑ][\wáéíóúñ]*', '', limpia)
+    return set(re.findall(r'\b\d{3,4}(?:\.\d{3})?\b', frase)) | \
+           set(re.findall(r'\b[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{4,}\b', sin_inicial))
+
+_COMUNES = {'Estado', 'Patria', 'Cabildo', 'Buenos', 'Aires', 'Nacional',
+            'Argentina', 'Ejército', 'Norte', 'Madre', 'Guzmán', 'Internacional',
+            'Representantes', 'Capitán', 'Infantería', 'Plana', 'Mayor', 'Sargento'}
+
+for _r in _rc.todos():
+    _ref = _r['fm'].get('monografia', '')
+    _mono = list((RAIZ / 'monografias').glob(f'{_ref}*.md')) if _ref else []
+    if not _mono:
+        continue
+    _texto_mono = _mono[0].read_text()
+    _norm = re.sub(r'[^\wáéíóúñÁÉÍÓÚÑ ]', ' ', _texto_mono.lower())
+    for _e in _r['estaciones']:
+        for _clave in ('escena', 'sabemos', 'inferimos', 'nosabemos'):
+            _txt = re.sub(r'\*\*|\*|`', '', _e['bloques'].get(_clave, ''))
+            for _frase in re.split(r'(?<=[.!?])\s+', _txt):
+                if len(_frase.strip()) < 25:
+                    continue
+                for _a in _anclas(_frase) - _COMUNES:
+                    if _a.lower() not in _norm:
+                        problemas.append(
+                            f"DERIVA NARRATIVA {_r['id']} est.{_e['n']} ({_clave}): "
+                            f"«{_a}» no aparece en la monografía {_ref} — "
+                            f"la prosa afirma más de lo que su fuente sostiene")
+
+
 print(f"páginas: {len(list(D.rglob('*.html')))} · problemas: {len(problemas)}")
 for p in problemas[:25]: print("  ✗", p)
 if not problemas: print("  ✓ todo limpio")

@@ -35,6 +35,12 @@ jobs:
       - name: Control de calidad
         run: python3 sitio/qa.py
 
+      - name: Accesibilidad
+        run: python3 sitio/a11y.py
+
+      - name: Pruebas del conversor de fechas
+        run: python3 sitio/edtf.py
+
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
