@@ -3,7 +3,7 @@ id: ECO-1975-RODRIGAZO-01
 periodo: 1973-1976
 temas: [economía, inflación, peronismo]
 tipo: [debatido]
-estado: debatido
+estado: actualizado
 confianza: media
 fuentes:
   - Torre y de Riz, 1991, Cambridge, cap. 2

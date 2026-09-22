@@ -2,8 +2,8 @@
 id: MET-NUDOS-01
 periodo: 1810-2026
 temas: [método, tesis central, interpretación]
-tipo: [interpretación]
-estado: debatido
+tipo: [interpretación, debatido]
+estado: actualizado
 confianza: media
 fuentes:
   - Síntesis interpretativa del dossier a partir del corpus

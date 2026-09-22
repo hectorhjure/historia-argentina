@@ -2,7 +2,7 @@
 id: MET-SESGOS-01
 periodo: 2026
 temas: [método, sesgos, límites]
-tipo: [hecho]
+tipo: [hecho, metodológica]
 estado: actualizado
 confianza: alta
 fuentes:

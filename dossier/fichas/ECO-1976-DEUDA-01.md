@@ -4,7 +4,7 @@ periodo: 1976-1983
 temas: [economía, dictadura, deuda]
 tipo: [hecho]
 estado: actualizado
-confianza: alta
+confianza: media
 fuentes:
   - Torre y de Riz, 1991, Cambridge, cap. 2
 actualizado_hasta: 2026-09

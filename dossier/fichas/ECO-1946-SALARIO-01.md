@@ -4,7 +4,7 @@ periodo: 1946-1949
 temas: [economía, peronismo, distribución]
 tipo: [hecho]
 estado: actualizado
-confianza: alta
+confianza: media
 fuentes:
   - Juan Carlos Torre y Liliana de Riz, 1991, Cambridge vol. El Cono Sur desde 1930, cap. 2
 actualizado_hasta: 2026-09

@@ -4,7 +4,7 @@ periodo: 1875-1885
 temas: [economía, territorio, pueblos originarios]
 tipo: [interpretación]
 estado: actualizado
-confianza: alta
+confianza: media
 fuentes:
   - Cortés Conde, 1986, Cambridge, cap. 1, sección «La tierra»
 actualizado_hasta: 2026-09

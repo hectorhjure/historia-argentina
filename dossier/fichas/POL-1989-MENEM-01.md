@@ -3,7 +3,7 @@ id: POL-1989-MENEM-01
 periodo: 1989-1999
 temas: [peronismo, neoliberalismo, identidad política]
 tipo: [debatido]
-estado: debatido
+estado: actualizado
 confianza: media
 fuentes:
   - Luis Alberto Romero, cap. XV de *Breve historia de la Argentina*

@@ -3,7 +3,7 @@ id: ECO-1880-LATIFUNDIO-01
 periodo: 1880-1914
 temas: [economía, tierra, historiografía]
 tipo: [debatido]
-estado: debatido
+estado: actualizado
 confianza: media
 fuentes:
   - Roberto Cortés Conde, 1986, Cambridge vol. América del Sur c.1870-1930, cap. 1

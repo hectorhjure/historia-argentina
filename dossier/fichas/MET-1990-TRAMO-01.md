@@ -2,9 +2,9 @@
 id: MET-1990-TRAMO-01
 periodo: 1990-2026
 temas: [método, fuentes, actualidad]
-tipo: [hecho]
-estado: provisional
-confianza: baja
+tipo: [hecho, metodológica]
+estado: actualizado
+confianza: alta
 fuentes:
   - `14-regimenes-estadisticos.md`; `12-fuentes-y-limitaciones.md` §1.C
 actualizado_hasta: 2026-09
@@ -12,6 +12,8 @@ prosa_relacionada: [01-timeline#VIII, 04-economia#9, 14-regimenes-estadisticos]
 ---
 
 **Afirmación.** El tramo 1990-2026 del dossier es el peor fundado y el que más se va a consultar.
+
+> **Por qué esta ficha dice `confianza: alta` afirmando una debilidad.** La confianza califica la **meta-afirmación**, no el tramo que describe. Que el tramo 1990-2026 esté flojamente fundado se sabe con certeza —es lo que la ficha afirma, y el corpus es la fuente primaria sobre sus propios límites—. Marcarla `baja` escondía la advertencia justo del lector que filtra por confianza alta, que es el que más necesita verla. Ver [`RUBRICA.md`](RUBRICA.md) §1, caso `metodológica`.
 
 **Evidencia y mecanismo.** Son 36 años —más que todo el período 1880-1916— sostenidos sobre prensa, fuentes secundarias y conocimiento general, porque el corpus académico local termina hacia 1990. Cada cifra del tramo lleva ahora su estatus explícito: ✓ verificada contra fuente institucional, o ⚠ no verificada.
 

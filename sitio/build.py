@@ -115,7 +115,7 @@ def recolectar():
         })
 
     for p in sorted((RAIZ / "dossier" / "fichas").glob("*.md")):
-        if p.stem == "README":
+        if p.stem in ("README", "RUBRICA"):
             continue
         fm, cuerpo = frontmatter(p.read_text())
         m = re.search(r"\*\*Afirmación\.\*\*\s*(.+?)(?:\n\n|$)", cuerpo, re.S)
@@ -151,6 +151,8 @@ def construir_mapa(docs):
         mapa[d["slug"] + ".md"] = d["url"]
         if d["capa"] == "monografia":
             mapa[d["fuente"].stem] = d["url"]
+    # La rúbrica no es una ficha, pero las fichas la citan.
+    mapa["RUBRICA"] = mapa["RUBRICA.md"] = "fichas/rubrica.html"
     return mapa
 
 
@@ -314,6 +316,13 @@ def badge(texto, clase=""):
     return f'<span class="badge {clase}">{texto}</span>' if texto else ""
 
 
+def clase_de(valor, prefijo):
+    """Primera palabra del valor como sufijo de clase. Un campo vacío devuelve
+    cadena vacía en vez de romper el build con IndexError."""
+    partes = str(valor or "").split()
+    return prefijo + partes[0] if partes else ""
+
+
 # --------------------------------------------------------------- páginas
 
 def render(docs, mapa, entrantes):
@@ -332,9 +341,9 @@ def render(docs, mapa, entrantes):
         meta = ""
         if d["capa"] == "ficha":
             meta = ("<div class='meta'>"
-                    + badge(fm.get("estado", ""), "e-" + str(fm.get("estado", "")).split()[0])
+                    + badge(fm.get("estado", ""), clase_de(fm.get("estado"), "e-"))
                     + badge("confianza " + str(fm.get("confianza", "")),
-                            "c-" + str(fm.get("confianza", "")).split()[0])
+                            clase_de(fm.get("confianza"), "c-"))
                     + badge(fm.get("periodo", ""), "neutro")
                     + "".join(badge(t, "tema") for t in (fm.get("temas") or []))
                     + "</div>")
@@ -472,7 +481,7 @@ def indices(docs, filas):
             f' data-busq="{_h.escape(busq, quote=True)}">'
             f'<span class="fid">{f["slug"]}</span>'
             f'<p>{_h.escape(f.get("afirmacion", ""))}</p>'
-            f'<span class="meta">{badge(est, "e-" + est.split()[0] if est else "")}'
+            f'<span class="meta">{badge(est, clase_de(est, "e-"))}'
             f'{badge("confianza " + conf, "c-" + conf) if conf else ""}'
             f'{badge(per, "neutro")}</span></a>')
     listado = "".join(items)
@@ -484,6 +493,10 @@ def indices(docs, filas):
 <p class="bajada">{len(fichas)} afirmaciones portantes. Cada ficha es autocontenida: lleva
 su fuente, su estado de verificación y su límite adentro. <strong>Citá la fuente que la
 ficha declara, no «el dossier».</strong></p>
+<div class="regla-destacada"><strong><code>confianza</code> mide el respaldo, no el
+consenso.</strong> Una afirmación puede ser <code>debatido</code> y <code>alta</code> a la
+vez: el hecho está documentado y su interpretación se discute. Los tres campos se asignan
+con criterios falsables — <a href="rubrica.html">ver la rúbrica</a>.</div>
 <div class="filtros">
   <input id="ff" type="search" placeholder="Filtrar por texto, id o tema…" aria-label="Filtrar fichas">
   <div id="chips" class="chips"></div>
@@ -543,6 +556,18 @@ seguro, reunidos en un solo lugar. Ninguno está escondido en una nota al pie.</
 para verse mejor. Acá es al revés: <strong>estas marcas son el producto</strong>. Una
 síntesis que no puede decir dónde falla no es verificable.</div>
 {grupos}</article>""", 0, "incertidumbre.html"))
+
+    # ---- página de la rúbrica
+    rub = (RAIZ / "dossier" / "fichas" / "RUBRICA.md").read_text()
+    cuerpo_rub = re.sub(r"^#\s+.+$", "", rub, count=1, flags=re.M)
+    (SALIDA / "fichas" / "rubrica.html").write_text(
+        pagina("Rúbrica de confianza",
+               "<article class='lectura'><p class='kicker'>Capa 2 · criterio</p>"
+               "<h1>Rúbrica de confianza y estado</h1>"
+               + resolver(pandoc(cuerpo_rub), {}, 1) + "</article>",
+               1, "fichas",
+               "Criterios falsables para los campos de estado, confianza y tipo "
+               "de las fichas de evidencia."))
 
     # ---- índice de búsqueda
     idx = [{"t": d["titulo"], "u": d["url"], "c": d["capa"],

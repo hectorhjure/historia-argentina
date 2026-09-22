@@ -4,7 +4,7 @@ periodo: 1860-1912
 temas: [ciudadanía, prensa, asociaciones]
 tipo: [interpretación]
 estado: actualizado
-confianza: alta
+confianza: media
 fuentes:
   - Hilda Sabato, 2016, «Sobre la ciudadanía política en América Latina en el siglo XIX», en *Pensar la modernidad política*, Instituto Mora — **leído en directo**
 actualizado_hasta: 2026-09

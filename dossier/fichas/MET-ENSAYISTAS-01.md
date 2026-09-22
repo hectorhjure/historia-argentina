@@ -2,7 +2,7 @@
 id: MET-ENSAYISTAS-01
 periodo: 2026
 temas: [método, historiografía, divulgación]
-tipo: [hecho]
+tipo: [hecho, metodológica]
 estado: actualizado
 confianza: alta
 fuentes:

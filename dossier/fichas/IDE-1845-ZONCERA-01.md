@@ -2,8 +2,8 @@
 id: IDE-1845-ZONCERA-01
 periodo: 1845-1968
 temas: [ideologías, cultura, historiografía]
-tipo: [interpretación]
-estado: debatido
+tipo: [interpretación, debatido]
+estado: actualizado
 confianza: baja
 fuentes:
   - Arturo Jauretche, *Manual de zonceras argentinas*, Zoncera N° 1 — **ensayo político, no historiografía**

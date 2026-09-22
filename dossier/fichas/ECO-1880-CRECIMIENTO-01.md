@@ -4,7 +4,7 @@ periodo: 1880-1912
 temas: [economía, crecimiento, agroexportación]
 tipo: [hecho]
 estado: actualizado
-confianza: alta
+confianza: media
 fuentes:
   - Roberto Cortés Conde, 1986, *Historia de América Latina* (Cambridge) vol. América del Sur c.1870-1930, cap. 1, Conclusión
 actualizado_hasta: 2026-09

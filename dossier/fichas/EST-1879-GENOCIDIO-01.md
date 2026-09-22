@@ -3,7 +3,7 @@ id: EST-1879-GENOCIDIO-01
 periodo: 1878-1885
 temas: [territorio, pueblos originarios, historiografía]
 tipo: [debatido]
-estado: debatido
+estado: actualizado
 confianza: media
 fuentes:
   - Pilar Pérez, 2019, «La Conquista del desierto y los estudios sobre genocidio», *Memoria Americana* 27(2)

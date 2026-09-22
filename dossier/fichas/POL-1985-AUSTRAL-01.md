@@ -4,7 +4,7 @@ periodo: 1985-1989
 temas: [economía, democracia, estabilización]
 tipo: [interpretación]
 estado: actualizado
-confianza: alta
+confianza: media
 fuentes:
   - Torre y de Riz, 1991, Cambridge vol. El Cono Sur desde 1930, cap. 2
 actualizado_hasta: 2026-09

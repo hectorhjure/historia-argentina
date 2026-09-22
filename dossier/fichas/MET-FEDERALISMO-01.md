@@ -2,9 +2,9 @@
 id: MET-FEDERALISMO-01
 periodo: 1935-2026
 temas: [federalismo, Estado, pendiente]
-tipo: [interpretación]
+tipo: [interpretación, metodológica]
 estado: provisional
-confianza: baja
+confianza: media
 fuentes:
   - Gibson y Calvo, 2000 (no leído en directo)
   - OPC, federalismo fiscal en Argentina

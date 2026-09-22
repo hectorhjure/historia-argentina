@@ -2,7 +2,7 @@
 id: MET-CORPUS-01
 periodo: 1986-2026
 temas: [método, fuentes, límites]
-tipo: [hecho]
+tipo: [hecho, metodológica]
 estado: actualizado
 confianza: alta
 fuentes:

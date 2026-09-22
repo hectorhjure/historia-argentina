@@ -4,7 +4,7 @@ periodo: 1933-1936
 temas: [economía, Gran Bretaña, dependencia]
 tipo: [interpretación]
 estado: actualizado
-confianza: alta
+confianza: media
 fuentes:
   - David Rock, 1991, Cambridge vol. El Cono Sur desde 1930, cap. 1
 actualizado_hasta: 2026-09

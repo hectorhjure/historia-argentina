@@ -4,7 +4,7 @@ periodo: 1880-1916
 temas: [ideologías, liberalismo, oligarquía]
 tipo: [interpretación]
 estado: actualizado
-confianza: alta
+confianza: media
 fuentes:
   - Ezequiel Gallo, 1986, Cambridge, cap. 2
 actualizado_hasta: 2026-09

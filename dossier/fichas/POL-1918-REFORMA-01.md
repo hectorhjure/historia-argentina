@@ -3,7 +3,7 @@ id: POL-1918-REFORMA-01
 periodo: 1918-1930
 temas: [educación, universidad, radicalismo]
 tipo: [debatido]
-estado: debatido
+estado: actualizado
 confianza: alta
 fuentes:
   - José Luis Romero, *Breve historia de la Argentina*, cap. XI

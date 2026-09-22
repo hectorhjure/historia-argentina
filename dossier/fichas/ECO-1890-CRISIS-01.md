@@ -4,7 +4,7 @@ periodo: 1885-1893
 temas: [economía, crisis, deuda]
 tipo: [hecho]
 estado: actualizado
-confianza: alta
+confianza: media
 fuentes:
   - Cortés Conde, 1986, Cambridge, cap. 1, sección sobre la crisis de 1890
 actualizado_hasta: 2026-09

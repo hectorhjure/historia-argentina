@@ -3,7 +3,7 @@ id: POL-1945-17OCTUBRE-01
 periodo: 1936-1946
 temas: [peronismo, movilización, migración]
 tipo: [debatido]
-estado: debatido
+estado: actualizado
 confianza: alta
 fuentes:
   - Torre y de Riz, 1991, Cambridge vol. El Cono Sur desde 1930, cap. 2

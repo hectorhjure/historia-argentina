@@ -2,8 +2,8 @@
 id: IDE-1930-NACIONALISMO-01
 periodo: 1930-1946
 temas: [ideologías, nacionalismo, peronismo]
-tipo: [interpretación]
-estado: debatido
+tipo: [interpretación, debatido]
+estado: actualizado
 confianza: media
 fuentes:
   - David Rock, 1991, Cambridge vol. El Cono Sur desde 1930, cap. 1
