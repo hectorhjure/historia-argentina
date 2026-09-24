@@ -150,6 +150,28 @@ El dossier fue sometido a una **revisión adversarial con Codex CLI** (21/09/202
 
 **Fuera de alcance por decisión, no por olvido:** mapa (los datasets de fronteras históricas no cubren 1810-1885), flechas causales (el corpus casi no declara relaciones causales explícitas), franja de densidad documental (mediría la carga del autor, no el archivo), cortes transversales «¿qué pasaba en 1913?» (cada año es una monografía de comparabilidad).
 
+## Próximos pasos
+
+Ordenados por rendimiento, no por atractivo. Los pendientes estaban repartidos entre este archivo, `monografias/README.md` y `plan-de-mejoras.md`; ésta es la lista única.
+
+### Bloqueado en Héctor — nadie más puede hacerlo
+
+1. **Prueba de lectura auditable (fase 5).** Es la que decide si la capa de experiencia sigue creciendo. Doce lectores, tres preguntas concretas sobre el recorrido de Valle —qué se sabe con certeza sobre su nacimiento, de dónde viene su apellido, qué conmemora el 8 de noviembre—. **Umbral acordado: 9 de 12.** Si no llega, la decisión ya tomada es dejar de expandir recorridos y volver a evidencia. No preguntar si les gustó.
+2. **Correr `benchmark-40.md`** en el Proyecto de ChatGPT. Nunca se corrió contra el dossier corregido, y desde entonces cambiaron cuatro afirmaciones sobre Valle, 29 fichas de estado o confianza y todo el tramo estadístico. Es la única medición externa del corpus y está vencida.
+3. **Resubir a ChatGPT** `15-fichas-de-evidencia.md`, `17-monografias.md` y `INSTRUCCIONES-pegar-en-el-proyecto.md`.
+
+### Trabajo de corpus — no depende de nadie
+
+4. **Monografía de Juana Azurduy** (`VID-1780-AZURDUY-01`). Lo que más mejora el corpus por unidad de esfuerzo: mismo problema que Valle —relato consolidado sin aparato— y peor resuelto. Además habilita el segundo recorrido, porque no se narra lo que no se investigó.
+5. **Rúbrica para las monografías.** Las fichas tienen criterios falsables; las monografías, no. Es la misma deuda que se pagó en la fase 1, un nivel más arriba.
+6. **Las 4 fichas provisionales** son las únicas sin verificar de 66.
+7. **Tramo 1990-2026 contra las bases del INDEC y el BCRA.** El peor fundado del corpus y el que más se consulta.
+8. **Fichas de 66 hacia 80-100**, como preveía el plan original.
+
+### Lo que conviene NO hacer todavía
+
+**Más recorridos.** Hay uno y no sabemos si funciona. Construir el segundo antes de medir el primero es la deriva de alcance que la propuesta puso como riesgo número uno.
+
 ## Advertencias de uso
 
 - El corpus académico local (Cambridge History of Latin America, Romero, manual del CNBA) **termina alrededor de 1990-1995**. Todo lo posterior en el dossier se apoya en fuentes web y está marcado como tal.

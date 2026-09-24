@@ -248,6 +248,8 @@ Mínimo: preguntas 1 (Rosas), 13 (resumen) y una nueva sobre participación pol�
 
 ### ⬜ Pospuesto por decisión del debate
 
+> Las decisiones cerradas están resumidas en [`CLAUDE.md`](CLAUDE.md#decisiones-cerradas--no-reabrir-sin-motivo-nuevo), con el motivo de cada una.
+
 Cuatro dossiers regionales · Australia · capítulo de federalismo fiscal · historia afroargentina posterior a la independencia · los diez temas de `dossier/12-fuentes-y-limitaciones.md` §5 bis.
 
 ---

@@ -54,6 +54,8 @@ Capacidad: **7 paquetes libres**. A razón de 3-5 monografías por paquete, el t
 
 ## Cola de trabajo
 
+> La lista de prioridades del proyecto entero está en el [README del repositorio](https://github.com/hectorhjure/historia-argentina#próximos-pasos). Ésta es sólo el orden interno de esta capa.
+
 Por orden de rendimiento esperado —es decir, de cuánto corrigen al dossier, no de cuán atractivas son:
 
 1. **`VID-1780-AZURDUY-01` — Juana Azurduy.** Mismo problema que Del Valle y peor resuelto: el dossier repite el relato de mando militar sin discutir qué documenta y qué no. Es la comparación natural.
